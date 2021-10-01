@@ -2,36 +2,26 @@
     <div class="deck-list">
         <div class="deck">
             <h4>04 - 14</h4>
-            <div class="card-wrapper">
-                <div class="card">
-                  <div class="card-face card-back"></div>
-                </div>
-            </div>
-            <p>剩餘：<span>6</span>張</p>
+            <card front='card-back'></card>
+            <p>剩餘：<span>{{deck1.length}}</span>張</p>
         </div>
         <div class="deck">
             <h4>15 - 28</h4>
-            <div class="card-wrapper">
-                <div class="card">
-                  <div class="card-face card-back"></div>
-                </div>
-            </div>
-            <p>剩餘：<span>12</span>張</p>
+            <card front='card-back'></card>
+            <p>剩餘：<span>{{deck2.length}}</span>張</p>
         </div>
         <div class="deck" style="border: 0px;">
             <h4>29 - 41</h4>
-            <div class="card-wrapper">
-                <div class="card">
-                  <div class="card-face card-back"></div>
-                </div>
-            </div>
-            <p>剩餘：<span>14</span>張</p>
+            <card front='card-back'></card>
+            <p>剩餘：<span>{{deck3.length}}</span>張</p>
         </div>
     </div>
 </template>
 
 
 <script>
+    import { mapGetters } from "vuex"
+    import card from "../card.vue"
     export default {
         name: 'deckListVertical',
         data(){
@@ -39,9 +29,14 @@
             }
         },
         components:{
+            card:card
         },
         computed:{
-           
+            ...mapGetters({
+                deck1 :"getDeck1",
+                deck2 :"getDeck2",
+                deck3 :"getDeck3",
+            })
         },
     }
 </script>
@@ -81,62 +76,5 @@
     text-align: center;
   }
 }
-
-.card-wrapper {
-  position: relative;
-  width: 54px;
-  height: 70px;
-  margin: 0 8px;
-  -webkit-perspective: 600px;
-  perspective: 600px;
-}
-.card {
-  /*border:2px solid #ccc;*/
-  background-image: url(#{$assetPath}/border-gray.jpg);
-  background-size: 100%;
-  position: relative;
-  width: 100%;
-  height: 100%;
-  transition: transform 1s;
-  transform-style: preserve-3d;
-  border-radius: 0px;
-
-  &.is-flipped {
-    transform: rotateY(180deg);
-  }
-}
-
-.card-face {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  text-align: center;
-  line-height: 20px;
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-}
-.card-front {
-  -webkit-transform: rotateY(180deg);
-  transform: rotateY(180deg);
-}
-
-.card-back {
-  background-color: #00f;
-  background: url(#{$assetPath}/logo.png) no-repeat center center;
-  background-size: 120%;
-
-  &:affter {
-    content: "";
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    background: url(#{$assetPath}/border-gray.jpg);
-    background-size: 100%;
-  }
-}
-
 
 </style>
