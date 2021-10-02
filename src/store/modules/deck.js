@@ -1,6 +1,8 @@
 function range(start, end) {
     return Array(end - start + 1).fill().map((_, idx) => start + idx);
 }
+
+import draw from "./drawCard.js"
 const store = {
     state: {
         deck1: [],
@@ -43,6 +45,21 @@ const store = {
         getEscapeList(state) {
             return state.escape_list
         },
+        getThiefList(state) {
+            return {
+                thief_hand: state.thief_hand,
+                thief_temp: state.thief_temp
+            }
+        },
+        getPoliceList(state) {
+            return {
+                police_hand: state.police_hand,
+                police_temp: state.police_temp,
+            }
+        },
+        getEscapeLastNumber(state) {
+            return state.escape_list[state.escape_list.length - 1].main
+        },
 
     },
     mutations: {
@@ -54,7 +71,45 @@ const store = {
             state.deck2 = range(15, 28);
             state.deck3 = range(29, 41);
             state.whole = range(1, 41);
-        }
+            state.speedList = [];
+            state.thief_hand = [1, 2, 3, 42];
+            state.police_hand = [];
+            state.escape_list = [{
+                "status": true,
+                "main": 0,
+                "speed": 0,
+                "sub": []
+            }];
+        },
+
+        initTempList(state) {
+            state.thief_temp = {
+                mainKey: null,
+                subNo: [],
+                speed: 0
+            }
+            state.police_temp = [];
+        },
+        addEscapeList(state, data) {
+            state.escape_list.push(data);
+        },
+        addThiefTemp(state, payload) {
+            if (state.thief_temp.mainKey == null) {
+                state.thief_temp.mainKey = payload.main;
+            }
+            if (typeof payload.sub != "undefined") {
+                state.thief_temp.subNo.push(payload.sub);
+                state.thief_temp.speed += state.speedList[payload.sub - 1];
+            }
+        },
+        addThiefHand(state, array) {
+            state.thief_hand = state.thief_hand.concat(array);
+            state.thief_hand = state.thief_hand.sort((a, b) => a - b);
+        },
+        reduceThiefHand(state, num) {
+            var index = state.thief_hand.indexOf(num);
+            state.thief_hand.splice(index, 1);
+        },
 
     },
     actions: {
@@ -64,9 +119,31 @@ const store = {
                 var random = Math.floor(Math.random() * 2) + 1;
                 commit('setSpeedList', random);
             });
+            commit('initTempList');
+            commit('deckDraw', {
+                'hand': state.thief_hand,
+                'num': 3,
+                'item': state.deck1
+            });
+            commit('deckDraw', {
+                'hand': state.thief_hand,
+                'num': 2,
+                'item': state.deck2
+            });
+            commit('deckDraw', {
+                'hand': state.police_hand,
+                'num': 2,
+                'item': state.deck1
+            });
+        },
+        addThiefTemp({ commit }, payload) {
+            commit('addThiefTemp', payload);
+        },
+        addThiefHand({ commit }, array) {
+            commit('addThiefHand', array);
         }
     },
-    modules: {}
+    modules: { draw }
 }
 
 export default store

@@ -8,7 +8,8 @@
 <template>
     <div class="card-wrapper">
         <a :id="('card-' + number)" class="card" :class="[main, flipped]" href="javascript:void(0)"
-          >  
+          :draggable="draggable" @dragstart="dragStart" @dragover.stop>
+            
             <div class="card-face" :class="front">
                 <template v-if="front == 'card-front'">
                   <div :class="{[('speed-') + foot] : foot}" class="speed-up full-bg"></div>
@@ -27,6 +28,10 @@
             }
         },
         props:{
+            draggable: {
+              type: Boolean,
+              default: false
+            },
             number:Number,
             main:String,
             flipped:String,
@@ -36,6 +41,10 @@
         components:{
         },
         methods:{
+          dragStart:e=>{
+              const target = e.target;
+              e.dataTransfer.setData('card_id',target.id);
+          }
         }
     }
 </script>

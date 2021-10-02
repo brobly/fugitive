@@ -6,40 +6,48 @@
             <escapeArea></escapeArea>
           </div>
           <div class="floating-nav"> 
+              <navItem @turn="turnBoxOn('hand')" icon="hand"></navItem>
               <navItem @turn="turnBoxOn('rule')" icon="manual"></navItem>
           </div>
       </div>
       <div v-show="blackOn" class="black-background"></div>
       <rule></rule>
+      <hand></hand>
   </div>
 </template>
 
 <script>
 import topHeader from "./components/topHeader.vue"
 import rule from "./components/rule.vue"
+import hand from "./components/hand.vue"
 import navItem from "./components/navItem.vue"
 import escapeArea from "./components/escape/escapeArea.vue"
 import { mapGetters, mapMutations } from "vuex"
 
 export default {
-  name: 'App',
-  components:{
-    'topHeader' : topHeader,
-    'rule' : rule,
-    'navItem' : navItem,
-    'escapeArea' : escapeArea
-  },
-  computed:{
-      ...mapGetters({
-          role : "getRole",
-          blackOn : "getBlackOn"
-      })
-  },
-  methods:{
-      ...mapMutations({
-          turnBoxOn : "turnBoxOn"
-      })
-  },
+    name: 'App',
+    components:{
+        'topHeader' : topHeader,
+        'rule' : rule,
+        'hand' : hand,
+        'navItem' : navItem,
+        'escapeArea' : escapeArea
+    },
+    computed:{
+        ...mapGetters({
+            role : "getRole",
+            blackOn : "getBlackOn",
+            getSpeed : "getSpeedList",
+        })
+    },
+    methods:{
+        ...mapMutations({
+            turnBoxOn : "turnBoxOn"
+        })
+    },
+    mounted(){
+      this.$store.dispatch('initDeck');
+    }
 }
 </script>
 
