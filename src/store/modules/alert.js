@@ -1,7 +1,11 @@
 const store = {
     state: {
         blackOn: false,
-        openBox: ""
+        openBox: "",
+        boxIcon: "",
+        stateText: "",
+        boxState: "",
+        prevBox: ""
     },
     getters: {
         getBlackOn(state) {
@@ -9,6 +13,15 @@ const store = {
         },
         getBoxOn(state) {
             return state.openBox;
+        },
+        getBoxIcon(state) {
+            return state.boxIcon
+        },
+        getStateText(state) {
+            return state.stateText
+        },
+        getBoxState(state) {
+            return state.boxState
         },
     },
     mutations: {
@@ -20,8 +33,36 @@ const store = {
             state.blackOn = false;
             state.openBox = "";
         },
+        setBoxIcon(state, icon) {
+            state.boxIcon = icon
+        },
+        setStateText(state, msg) {
+            state.stateText = msg;
+        },
+        setBoxState(state, status) {
+            state.boxState = status;
+        },
+        turnAlertOn(state) {
+            state.blackOn = true;
+            state.prevBox = state.openBox;
+            state.openBox = "alert"
+        },
+        closeAlertBox(state) {
+            state.openBox = state.prevBox;
+            if (state.openBox == "alert") {
+                state.blackOn = false;
+                state.openBox = "";
+            }
+        }
     },
-    actions: {},
+    actions: {
+        setStateBox({ commit }, payload) {
+            commit('turnAlertOn');
+            commit('setBoxIcon', payload.icon);
+            commit('setStateText', payload.msg);
+            commit('setBoxState', payload.status);
+        }
+    },
     modules: {}
 }
 

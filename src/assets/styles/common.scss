@@ -120,6 +120,21 @@ h5 {
     }
 }
 
+i.error {
+    background-image: url(#{$assetPath}/warn.png);
+}
+
+i.info {
+    background-image: url(#{$assetPath}/info.png);
+}
+
+i.winning {
+    background-image: url(#{$assetPath}/winning2.png);
+    width: 70px;
+    height: 70px;
+    margin-bottom: 0px;
+}
+
 
 /* .c-icon part */
 

@@ -110,6 +110,11 @@ const store = {
             var index = state.thief_hand.indexOf(num);
             state.thief_hand.splice(index, 1);
         },
+        changeEscapeList(state, array) {
+            array.forEach(item => {
+                state.escape_list[state.escape_list.indexOf(item)].status = true;
+            });
+        },
 
     },
     actions: {
@@ -141,6 +146,9 @@ const store = {
         },
         addThiefHand({ commit }, array) {
             commit('addThiefHand', array);
+        },
+        addEscapeList({ commit }, data) {
+            commit('addEscapeList', data);
         }
     },
     modules: { draw }

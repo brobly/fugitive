@@ -10,17 +10,34 @@ export default new Vuex.Store({
         phase: 0,
         role: "thief",
         firstRound: true,
+        draggable: true,
+        disabled: false
 
     },
     getters: {
         getRole(state) {
             return state.role
         },
+        getDisable(state) {
+            return state.disabled
+        },
+        getThiefFirst(state) {
+            return state.thiefFirst
+        },
+        getDraggable(state) {
+            return state.draggable
+        },
 
     },
     mutations: {
         changeRole(state, role) {
             state.role = role;
+        },
+        changeDisabled(state) {
+            state.disabled = !state.disabled;
+        },
+        changeDraggable(state) {
+            state.draggable = !state.draggable;
         },
     },
     actions: {},

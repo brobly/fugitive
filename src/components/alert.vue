@@ -1,0 +1,69 @@
+
+<template>
+    <div v-if="alertOn == 'alert'" id="alert-box" class="box containBox">
+        <div class="content">
+            <!-- icon -->
+            <i v-if="boxIcon == 'info'" class="info c-background--full"></i>
+            <i v-else class="full-bg" :class="boxIcon"></i>
+
+            <!-- role -->
+            <h2 v-if="boxState == 'win'" id="role-winning">{{role}}勝利!!!</h2>
+
+            <!-- desc -->
+            <div class="state-text">
+                <p>{{stateText}}</p>
+            </div>
+
+            <!-- btn -->
+            <div v-if="boxState == 'normal'" id="btn-normal" class="btn-group-wrap">
+                <button @click="closeAlertBox" class="btn btn-primary">確定</button>
+            </div>
+
+            <div v-else-if="boxState == 'win'" id="btn-win-group" class="btn-group-wrap">
+                <div class="btn-group">
+                    <button class="btn btn-primary">再來一局</button>
+                </div>
+            </div>
+
+            <div v-else >
+                boxState error
+                <button  @click="closeAlertBox" class="btn btn-primary">取消</button>
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+    import { mapGetters, mapMutations, mapActions } from "vuex";
+
+    export default {
+        name: 'Alert',
+        computed:{
+            ...mapGetters({
+                alertOn : "getBoxOn",
+                boxIcon:"getBoxIcon",
+                stateText : "getStateText",
+                boxState : "getBoxState"
+            })
+        },
+        methods:{
+            ...mapMutations({
+                closeAlertBox : "closeAlertBox"
+            }),
+            ...mapActions({
+            }),
+        }
+    }
+
+</script>
+<style lang="scss" scoped>
+#alert-box {
+    h2 {
+        text-align: center;
+        display: none;
+    }
+    .state-text p {
+        text-align: center;
+        font-size: 28px;
+    }
+}
+</style>
