@@ -176,6 +176,12 @@ i.winning {
     width: 38px;
 }
 
+.c-icon__i--draw-img {
+    background-image: url(#{$assetPath}/Paul-06-512.png);
+    height: 60px;
+    width: 55px;
+}
+
 .black-background {
     position: fixed;
     top: 0px;

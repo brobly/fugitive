@@ -11,7 +11,11 @@
             <!-- <div class="timer-wrapper">計時：<div class="timer">120s</div></div> -->
             <template v-if="role=='thief'">
                 <div class="state-text">
-                    <p>請選擇及拖放{{ (escape_list_last + 1) }} - {{rush_range}}你的藏身地點</p>
+                    <template v-if="!endOn">
+                        <p v-if="!thiefFirst">第1回合可選擇多一個藏身地點，請選擇{{ (escape_list_last + 1) }} - {{rush_range}}號的牌</p>
+                        <p v-else >請選擇及拖放{{ (escape_list_last + 1) }} - {{rush_range}}你的藏身地點</p>
+                    </template>
+                    <p v-else>你已經選擇了藏身地點，請你結束回合</p>
                 </div>
                 <div class="hand-list">
                     <card v-for="item in thiefList.thief_hand" :key="('hand-' + item)"
@@ -88,6 +92,7 @@
         computed:{
             ...mapGetters({
                 role:"getRole",
+                endOn : "getEndOn", 
                 handOn : "getBoxOn",
                 speedList : "getSpeedList",
                 thiefList : "getThiefList",
@@ -96,6 +101,7 @@
                 escape_list_last : "getEscapeLastNumber",
                 disabled : "getDisable",
                 draggable : "getDraggable",
+                thiefFirst : "getThiefFirst",
             }),
             rush_range(){
                 return this.escape_list_last + 3 + this.thiefList.thief_temp.speed
@@ -106,14 +112,19 @@
                 closeBox : "closeBox",
                 reduceThiefHand  : "reduceThiefHand",
                 initTempList : "initTempList",
+                changeRole : "changeRole",
+                changeEscapeList : "changeEscapeList",
                 changeDisabled : "changeDisabled",
                 changeDraggable : "changeDraggable",
+                changeThiefFirst : "changeThiefFirst",
+                turnEndOn : "turnEndOn"
             }),
             ...mapActions({
                 addThiefTemp : "addThiefTemp",
                 addThiefHand : "addThiefHand",
                 addEscapeList : "addEscapeList",
                 setStateBox :"setStateBox",
+                thiefEnd : "thiefEnd",
             }),
             mainDrop: function(e){
                 let msg = "";
@@ -171,40 +182,80 @@
                 this.initTempList();
             },
             thiefAction: function(){
-                let thief_temp = this.thiefList.thief_temp,
+                let pass, 
+                    thief_temp = this.thiefList.thief_temp,
                     msg;
-                let data = {
-                        status: false,
-                        main: thief_temp.mainKey,
-                        sub: thief_temp.subNo,
-                        speed: thief_temp.speed
-                    }
-                
-                if(data.main <= this.rush_range){
-                    this.addEscapeList(data);
-                    this.initTempList();
 
-                    if(data.main == 42){
-                            msg = "恭喜你！你已經逃離神探的追捕!";
+                if (thief_temp.mainKey != null)
+                    pass = false;
+                else
+                    pass = true;
+
+                if (pass == false) {
+                    let data = {
+                            status: false,
+                            main: thief_temp.mainKey,
+                            sub: thief_temp.subNo,
+                            speed: thief_temp.speed
+                        }
+
+                    
+                    if(data.main <= this.rush_range){
+                        this.addEscapeList(data);
+                        this.initTempList();
+
+                        if(data.main == 42){
+                            if(this.flipped_last >= 29){
+                                msg = "恭喜你！你已經逃離神探的追捕!";
+                                this.setStateBox({   
+                                    icon :'winning',
+                                    msg : msg , 
+                                    status: 'win'
+                                });
+                            }else{
+                                this.changeRole("police");
+                                msg = `逃亡者已經到達42號藏身地點，但你還沒調查出29號或以上地點
+                                所以遊戲繼續直至你猜錯或調查出所有藏身地點得以勝利!!`;
+                                this.setStateBox({   
+                                    icon :'info',
+                                    msg : msg , 
+                                    status: 'normal'
+                                });
+                            }
+                        }else if(data.main <= 41){
+                            
+                            if(this.thiefFirst){
+                                this.changeThiefFirst();
+                            }else{
+                                this.thiefEnd();
+                            }
+                        }
+                    }else{
+                          msg = '你沒有選擇足夠距離的牌以達到藏身地點';
                             this.setStateBox({   
-                                icon :'winning',
+                                icon :'error',
                                 msg : msg , 
-                                status: 'win'
+                                status: 'normal'
                             });
-                    }else if(data.main <= 41){
-                        this.changeDisabled();
-                        this.closeBox();
-                        this.changeDraggable();
                     }
+
                 }else{
-                        msg = '你沒有選擇足夠距離的牌以達到藏身地點';
+                    if (this.escape_list.length > 1) {
+                        msg = "你沒有選擇藏身地點，請問這回合要Pass嗎?"
+                        this.setStateBox({   
+                            icon :'info',
+                            msg : msg , 
+                            status: 'pass'
+                        });
+                    } else {
+                        msg = "你沒有選擇藏身地點"
                         this.setStateBox({   
                             icon :'error',
                             msg : msg , 
                             status: 'normal'
                         });
+                    }
                 }
-
             },
             policeAction: function(){
 

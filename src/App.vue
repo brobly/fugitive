@@ -13,6 +13,7 @@
       <div v-show="blackOn" class="black-background"></div>
       <rule></rule>
       <hand></hand>
+    <draw></draw>
       <alertBox></alertBox>
   </div>
 </template>
@@ -21,6 +22,7 @@
 import topHeader from "./components/topHeader.vue"
 import rule from "./components/rule.vue"
 import hand from "./components/hand.vue"
+import draw from "./components/draw.vue"
 import navItem from "./components/navItem.vue"
 import alertBox from "./components/alert.vue"
 import escapeArea from "./components/escape/escapeArea.vue"
@@ -32,6 +34,7 @@ export default {
         'topHeader' : topHeader,
         'rule' : rule,
         'hand' : hand,
+        'draw' : draw,
         'navItem' : navItem,
         'alertBox' : alertBox,
         'escapeArea' : escapeArea

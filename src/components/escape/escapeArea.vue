@@ -20,14 +20,16 @@
                 </div>
             </div>
         </div>
-        <div id="js-end-turn--visible">
+        <div v-if="endOn" id="js-end-turn--visible">
             <span style="padding-right: 15px;">請點擊結束回合</span>
-            <button id="btn-end-turn" class="btn btn-primary">結束回合</button>
+            <button id="btn-end-turn" 
+            @click="setStateBox({icon :'info', msg : '確定結束回合嗎' , status: 'end'});"
+            class="btn btn-primary">結束回合</button>
         </div>
     </div>
 </template>
 <script>
-import { mapGetters } from "vuex"
+import { mapGetters, mapActions } from "vuex"
 import escapeList from "./escapeList.vue"
 import deckListVertical from "./deckListVertical.vue"
     export default {
@@ -39,16 +41,18 @@ import deckListVertical from "./deckListVertical.vue"
         computed:{
             ...mapGetters({
                 role:"getRole",
+                endOn : "getEndOn"
             })
         },
         methods:{
-           
+            ...mapActions({
+                setStateBox:'setStateBox'
+            }),
         },
         components:{
             'deckListVertical' : deckListVertical,
             'escapeList' : escapeList
         },
-    }
 </script>
 
 <style lang="scss" scoped>
