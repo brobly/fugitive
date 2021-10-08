@@ -8,12 +8,14 @@
           <div class="floating-nav"> 
               <navItem @turn="turnBoxOn('hand')" icon="hand"></navItem>
               <navItem @turn="turnBoxOn('rule')" icon="manual"></navItem>
+              <navItem v-if="role == 'police'" @turn="turnBoxOn('note')" icon="note"></navItem>
           </div>
       </div>
       <div v-show="blackOn" class="black-background"></div>
       <rule></rule>
       <hand></hand>
-    <draw></draw>
+      <draw></draw>
+      <note></note>
       <alertBox></alertBox>
   </div>
 </template>
@@ -23,6 +25,7 @@ import topHeader from "./components/topHeader.vue"
 import rule from "./components/rule.vue"
 import hand from "./components/hand.vue"
 import draw from "./components/draw.vue"
+import note from "./components/note.vue"
 import navItem from "./components/navItem.vue"
 import alertBox from "./components/alert.vue"
 import escapeArea from "./components/escape/escapeArea.vue"
@@ -35,6 +38,7 @@ export default {
         'rule' : rule,
         'hand' : hand,
         'draw' : draw,
+        'note' : note,
         'navItem' : navItem,
         'alertBox' : alertBox,
         'escapeArea' : escapeArea

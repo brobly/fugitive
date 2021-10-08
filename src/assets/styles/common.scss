@@ -176,6 +176,13 @@ i.winning {
     width: 38px;
 }
 
+.c-icon__i--note-img {
+    margin-left: 2px;
+    background-image: url(#{$assetPath}/79217-200.png);
+    width: 35px;
+    height: 35px;
+}
+
 .c-icon__i--draw-img {
     background-image: url(#{$assetPath}/Paul-06-512.png);
     height: 60px;
@@ -191,6 +198,79 @@ i.winning {
     width: 100%;
     height: 100%;
     z-index: 8000;
+}
+
+
+/* Police Table */
+
+#table-detective-select {
+    margin-bottom: 20px;
+    margin: 0 auto;
+    min-width: 300px;
+}
+
+table.card-table {
+    tbody {
+        tr {
+            td {
+                position: relative;
+                border: 1px solid;
+                width: 50px;
+                height: 40px;
+                text-align: center;
+                cursor: pointer;
+            }
+        }
+        td.cross {
+            &:before {
+                content: "";
+                position: absolute;
+                background-color: #f00;
+                top: 18px;
+                left: 4px;
+                width: 40px;
+                height: 5px;
+                opacity: 0.6;
+                transform: rotate(-45deg);
+            }
+            &:after {
+                content: "";
+                position: absolute;
+                background-color: #f00;
+                top: 18px;
+                left: 4px;
+                width: 40px;
+                height: 5px;
+                opacity: 0.6;
+                transform: rotate(45deg);
+            }
+        }
+        td.cross.light {
+            &:before {
+                opacity: 0.3;
+            }
+            &:after {
+                opacity: 0.3;
+            }
+        }
+        td.judge {
+            &:before {
+                content: "";
+                position: absolute;
+                top: 2px;
+                left: 7px;
+                border-radius: 100%;
+                border: 5px solid #f00;
+                width: 35px;
+                height: 35px;
+            }
+        }
+    }
+    thead {
+        td {
+            padding: 10px 0px 3px;
+        }
+    }
 }
 
 @media only screen and (max-width: 780px) {

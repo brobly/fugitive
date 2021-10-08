@@ -19,9 +19,24 @@
                 <button @click="closeAlertBox" class="btn btn-primary">確定</button>
             </div>
 
+            <div v-else-if="boxState == 'pass'" id="btn-pass-group" class="btn-group-wrap">
+                <div class="btn-group">
+                    <button @click = "thiefEnd" id="btn-pass" class="btn btn-primary">Pass</button>
+                    <button @click="closeAlertBox" class="btn btn-primary ">取消</button>
+                </div>
+            </div>
+
             <div v-else-if="boxState == 'win'" id="btn-win-group" class="btn-group-wrap">
                 <div class="btn-group">
                     <button class="btn btn-primary">再來一局</button>
+                    <button class="btn btn-primary">返回目錄</button>
+                </div>
+            </div>
+
+            <div v-else-if="boxState == 'end'" id="btn-end-group" class="btn-group-wrap">
+                <div class="btn-group">
+                    <button @click="endUp" id="btn-end-yes" class="btn btn-primary">結束</button>
+                    <button @click="closeAlertBox" class="btn btn-primary">取消</button>
                 </div>
             </div>
 
@@ -39,6 +54,7 @@
         name: 'Alert',
         computed:{
             ...mapGetters({
+                role:"getRole",
                 alertOn : "getBoxOn",
                 boxIcon:"getBoxIcon",
                 stateText : "getStateText",
@@ -50,6 +66,8 @@
                 closeAlertBox : "closeAlertBox"
             }),
             ...mapActions({
+                thiefEnd: "thiefEnd",
+                endUp :"endUp",
             }),
         }
     }

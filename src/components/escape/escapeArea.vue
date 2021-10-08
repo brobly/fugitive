@@ -52,7 +52,8 @@ import deckListVertical from "./deckListVertical.vue"
         components:{
             'deckListVertical' : deckListVertical,
             'escapeList' : escapeList
-        },
+        }
+    }
 </script>
 
 <style lang="scss" scoped>

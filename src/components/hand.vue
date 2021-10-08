@@ -9,6 +9,7 @@
             </div>
             <p class="text-center">這是你的手牌</p>
             <!-- <div class="timer-wrapper">計時：<div class="timer">120s</div></div> -->
+        
             <template v-if="role=='thief'">
                 <div class="state-text">
                     <template v-if="!endOn">
@@ -27,13 +28,13 @@
                     <div class="btn-group">
                         <div>
                             <div id="main-location" class="droppable-block"
-                                @dragover.prevent @drop.prevent="mainDrop"></div>
+                             @dragover.prevent @drop.prevent="mainDrop"></div>
                             <p>藏身地點： <span>{{thiefList.thief_temp.mainKey}}</span></p>
                         </div>
 
                         <div>
                             <div id="sub-location" class="droppable-block"
-                                @dragover.prevent @drop.prevent="subDrop"></div>
+                             @dragover.prevent @drop.prevent="subDrop"></div>
                             <p>搭配： <span>{{thiefList.thief_temp.subNo}}</span></p>
                         </div>
                     </div>
@@ -50,6 +51,7 @@
                     </div>
                 </div>
             </template>
+
             <template v-else>
                 <div class="state-text">
                     <p>點擊已揭曉的地點能顯示該地點的全部號碼</p>
@@ -60,6 +62,22 @@
                         :number="item" :foot="speedList[(item - 1)]" >
                     </card>
                 </div>
+                <table id="table-detective-select" class="card-table">
+                    <thead>
+                        <tr>
+                            <td v-if="endOn" colspan="6">你己經選擇了調查地點</td>
+                            <td v-else colspan="6">請選擇一個或以上要調查的藏身地點</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="i in 7" :key="('police-selecr-tr'+i)">
+                            <td v-for="j in 6" :key="('police-select-td' + i + j)"
+                            @click="addPoliceTemp( (j + (i-1) * 6) - 1 )" >
+                                {{ j + (i-1) * 6 }}
+                            </td>
+                        </tr> 
+                    </tbody>
+                </table>
                 <div class="btn-group-wrap">
                     <div class="btn-group">
                         <button id="btn-card-action" :class="{'disabled': disabled}" class="btn btn-primary"
@@ -71,6 +89,10 @@
                     </div>
                 </div>
             </template>
+
+            <!--   <div class="progress-bar">
+                <div id="game-bar" class="bar" ></div>
+            </div> -->
         </div>
     </div>
 </template>
@@ -102,6 +124,7 @@
                 disabled : "getDisable",
                 draggable : "getDraggable",
                 thiefFirst : "getThiefFirst",
+                flipped_last : "getFlippedLastNumber"
             }),
             rush_range(){
                 return this.escape_list_last + 3 + this.thiefList.thief_temp.speed
@@ -125,6 +148,8 @@
                 addEscapeList : "addEscapeList",
                 setStateBox :"setStateBox",
                 thiefEnd : "thiefEnd",
+                addPoliceJudge : "addPoliceJudge",
+
             }),
             mainDrop: function(e){
                 let msg = "";
@@ -181,7 +206,7 @@
                 this.addThiefHand(arr);
                 this.initTempList();
             },
-            thiefAction: function(){
+            thiefAction : function(){
                 let pass, 
                     thief_temp = this.thiefList.thief_temp,
                     msg;
@@ -257,9 +282,48 @@
                     }
                 }
             },
-            policeAction: function(){
+            policeAction : function(){
+                let police_temp = this.policeList.police_temp,
+                    escape_list = this.escape_list,
+                    escape_main = escape_list.map( item => item.main),
+                    count = 0,
+                    msg;
 
-            },
+                if (police_temp.length > 0) {
+                    this.turnEndOn();
+                    this.changeDisabled();
+                    if (police_temp.every(val => escape_main.includes(val))) {
+                        this.changeEscapeList(police_temp)
+                        
+                        escape_list.forEach(function(item) {
+                            if(item.status)
+                                count++
+                        });
+                        if(count == escape_list.length){
+                             msg = "恭喜你！你已經完全找出逃亡者的藏身地點!";
+                              this.setStateBox({   
+                                icon :'winning',
+                                msg : msg , 
+                                status: 'win'
+                            });
+                        }else{
+                            msg = "太好了！你調查出逃亡者的藏身地點了";
+                              this.setStateBox({   
+                                icon :'info',
+                                msg : msg , 
+                                status: 'normal'
+                            });
+                        }
+                    }else{
+                        msg = "真可借！你這次沒有找出逃亡者的藏身地點";
+                            this.setStateBox({   
+                            icon :'info',
+                            msg : msg , 
+                            status: 'normal'
+                        });
+                    }
+                }
+            }
         }
     }
 </script>

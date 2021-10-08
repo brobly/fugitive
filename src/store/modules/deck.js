@@ -18,13 +18,13 @@ const store = {
         },
         police_hand: [],
         police_temp: [],
-        note: [],
         escape_list: [{
             "status": true,
             "main": 0,
             "sub": [],
             "speed": 0
-        }]
+        }],
+        crossList: []
     },
     getters: {
         getSpeedList(state) {
@@ -60,7 +60,15 @@ const store = {
         getEscapeLastNumber(state) {
             return state.escape_list[state.escape_list.length - 1].main
         },
-
+        getPoliceCrossList(state) {
+            return state.crossList
+        },
+        getFlippedLastNumber(state) {
+            var flipped = state.escape_list.filter((item) => {
+                return (item.status == true)
+            });
+            return flipped[flipped.length - 1].main;
+        }
     },
     mutations: {
         setSpeedList(state, random) {
@@ -80,6 +88,7 @@ const store = {
                 "speed": 0,
                 "sub": []
             }];
+            state.crossList = [];
         },
 
         initTempList(state) {
@@ -115,6 +124,12 @@ const store = {
                 state.escape_list[state.escape_list.indexOf(item)].status = true;
             });
         },
+        addPoliceJudge(state, num) {
+            state.police_temp.push(num);
+        },
+        addPoliceCross(state, num) {
+            state.crossList.push(num);
+        },
 
     },
     actions: {
@@ -149,7 +164,13 @@ const store = {
         },
         addEscapeList({ commit }, data) {
             commit('addEscapeList', data);
-        }
+        },
+        addPoliceJudge({ commit }, num) {
+            commit('addPoliceJudge', num);
+        },
+        addPoliceCross({ commit }, num) {
+            commit('addPoliceCross', num);
+        },
     },
     modules: { draw }
 }
