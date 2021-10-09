@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import alert from "./modules/alert.js"
 import deck from "./modules/deck.js"
+import alert from "./modules/alert.js"
 
 Vue.use(Vuex);
 
@@ -42,7 +42,7 @@ export default new Vuex.Store({
             state.endOn = !state.endOn;
         },
         changeFirstRound(state) {
-            state.firstRound = false;
+            state.firstRound = !state.firstRound;
         },
         changeDisabled(state) {
             state.disabled = !state.disabled;
@@ -61,6 +61,30 @@ export default new Vuex.Store({
             commit('turnEndOn');
             commit('changeDraggable');
         },
+        gameStart({ commit, dispatch, state }) {
+            let msg = "第一回合由逃亡者開始";
+            commit('changeRole', "thief");
+            commit('initAlert');
+
+            if (state.disabled)
+                commit('changeDisabled');
+            if (state.endOn)
+                commit('turnEndOn');
+            if (!state.firstRound)
+                commit('changeFirstRound');
+            if (!state.draggable)
+                commit('changeDraggable');
+            if (!state.thiefFirst)
+                commit('changeThiefFirst');
+
+            dispatch('initDeck');
+            dispatch('setStateBox', ({
+                icon: 'info',
+                msg: msg,
+                status: 'start'
+            }));
+
+        },
         endUp({ commit, dispatch, state }) {
 
             let roleList = [{ en: "thief", cn: "逃亡者" }, { en: "police", cn: "神探" }],
@@ -78,7 +102,7 @@ export default new Vuex.Store({
 
             commit('changeRole', nextRole);
             commit('turnEndOn');
-
+            commit('changeDisabled');
             if (state.firstRound) {
 
                 commit('changeFirstRound');
@@ -92,5 +116,5 @@ export default new Vuex.Store({
             }
         }
     },
-    modules: { alert, deck }
+    modules: { deck, alert }
 });

@@ -53,6 +53,14 @@ const store = {
                 state.blackOn = false;
                 state.openBox = "";
             }
+        },
+        initAlert(state) {
+            state.blackOn = false,
+                state.openBox = "",
+                state.boxIcon = "",
+                state.stateText = "",
+                state.boxState = "",
+                state.prevBox = ""
         }
     },
     actions: {

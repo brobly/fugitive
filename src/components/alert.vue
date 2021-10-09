@@ -19,6 +19,10 @@
                 <button @click="closeAlertBox" class="btn btn-primary">確定</button>
             </div>
 
+            <div v-else-if="boxState == 'start'" id="btn-normal" class="btn-group-wrap">
+                <button @click="turnBoxOn('hand')" class="btn btn-primary">確定</button>
+            </div>
+
             <div v-else-if="boxState == 'pass'" id="btn-pass-group" class="btn-group-wrap">
                 <div class="btn-group">
                     <button @click = "thiefEnd" id="btn-pass" class="btn btn-primary">Pass</button>
@@ -63,6 +67,7 @@
         },
         methods:{
             ...mapMutations({
+                turnBoxOn : "turnBoxOn",
                 closeAlertBox : "closeAlertBox"
             }),
             ...mapActions({

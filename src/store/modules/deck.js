@@ -88,16 +88,16 @@ const store = {
                 "speed": 0,
                 "sub": []
             }];
-            state.crossList = [];
+            state.crossList = Array(42).fill().map(() => false);
         },
-
         initTempList(state) {
             state.thief_temp = {
                 mainKey: null,
                 subNo: [],
                 speed: 0
             }
-            state.police_temp = [];
+            state.police_temp = Array(42).fill().map(() => false);
+
         },
         addEscapeList(state, data) {
             state.escape_list.push(data);
@@ -120,17 +120,20 @@ const store = {
             state.thief_hand.splice(index, 1);
         },
         changeEscapeList(state, array) {
-            array.forEach(item => {
-                state.escape_list[state.escape_list.indexOf(item)].status = true;
+            let idx, main = state.escape_list.map(item => item.main);
+            array.forEach((item) => {
+                idx = main.indexOf(item);
+                state.escape_list[idx].status = true;
             });
         },
-        addPoliceJudge(state, num) {
-            state.police_temp.push(num);
+        toggleJudge(state, idx) {
+            const res = !state.police_temp[idx];
+            state.police_temp.splice(idx, 1, res);
         },
-        addPoliceCross(state, num) {
-            state.crossList.push(num);
+        toggleCross(state, idx) {
+            const res = !state.crossList[idx];
+            state.crossList.splice(idx, 1, res);
         },
-
     },
     actions: {
         initDeck({ commit, state }) {
@@ -155,6 +158,12 @@ const store = {
                 'num': 2,
                 'item': state.deck1
             });
+            state.police_hand.forEach(function(item) {
+                commit('toggleCross', (item - 1));
+            });
+        },
+        addEscapeList({ commit }, data) {
+            commit('addEscapeList', data);
         },
         addThiefTemp({ commit }, payload) {
             commit('addThiefTemp', payload);
@@ -162,15 +171,13 @@ const store = {
         addThiefHand({ commit }, array) {
             commit('addThiefHand', array);
         },
-        addEscapeList({ commit }, data) {
-            commit('addEscapeList', data);
+        toggleJudge({ commit }, idx) {
+            commit('toggleJudge', idx);
         },
-        addPoliceJudge({ commit }, num) {
-            commit('addPoliceJudge', num);
+        toggleCross({ commit }, idx) {
+            commit('toggleCross', idx);
         },
-        addPoliceCross({ commit }, num) {
-            commit('addPoliceCross', num);
-        },
+
     },
     modules: { draw }
 }

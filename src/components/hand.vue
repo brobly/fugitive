@@ -53,31 +53,28 @@
             </template>
 
             <template v-else>
+                <button id='btn-show-cross' @click="toggleShowCross" class='btn btn-primary'>過濾</button>
                 <div class="state-text">
                     <p>點擊已揭曉的地點能顯示該地點的全部號碼</p>
                 </div>
+                
                 <div class="hand-list">
                     <card v-for="item in policeList.police_hand" :key="('hand-' + item)"
                         flipped="is-flipped" front="card-front" 
                         :number="item" :foot="speedList[(item - 1)]" >
                     </card>
                 </div>
-                <table id="table-detective-select" class="card-table">
-                    <thead>
-                        <tr>
-                            <td v-if="endOn" colspan="6">你己經選擇了調查地點</td>
-                            <td v-else colspan="6">請選擇一個或以上要調查的藏身地點</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="i in 7" :key="('police-selecr-tr'+i)">
-                            <td v-for="j in 6" :key="('police-select-td' + i + j)"
-                            @click="addPoliceTemp( (j + (i-1) * 6) - 1 )" >
-                                {{ j + (i-1) * 6 }}
-                            </td>
-                        </tr> 
-                    </tbody>
-                </table>
+                <div class="card-table">
+                    <p v-if="endOn" colspan="6">你己經選擇了調查地點</p>
+                    <p v-else colspan="6">請選擇一個或以上要調查的藏身地點</p>
+                    <div :class="{'disabled': disabled}" class="police-table police-selet">
+                        <div  v-for="(i,index) in policeList.police_temp" :key="('police-select' + index)" 
+                        class="police-table-item" @click="toggleJudge( index )"
+                            :class="[{'judge': i}, {'cross': (showCross && crossList[index])}]">
+                                {{index + 1}}
+                        </div>
+                    </div>
+                </div>
                 <div class="btn-group-wrap">
                     <div class="btn-group">
                         <button id="btn-card-action" :class="{'disabled': disabled}" class="btn btn-primary"
@@ -103,6 +100,7 @@
         name: 'hand',
         data(){
             return{
+                showCross : true
             }
         },
         props:{
@@ -124,7 +122,8 @@
                 disabled : "getDisable",
                 draggable : "getDraggable",
                 thiefFirst : "getThiefFirst",
-                flipped_last : "getFlippedLastNumber"
+                flipped_last : "getFlippedLastNumber",
+                crossList : "getPoliceCrossList"
             }),
             rush_range(){
                 return this.escape_list_last + 3 + this.thiefList.thief_temp.speed
@@ -136,10 +135,10 @@
                 reduceThiefHand  : "reduceThiefHand",
                 initTempList : "initTempList",
                 changeRole : "changeRole",
-                changeEscapeList : "changeEscapeList",
                 changeDisabled : "changeDisabled",
                 changeDraggable : "changeDraggable",
                 changeThiefFirst : "changeThiefFirst",
+                changeEscapeList : "changeEscapeList",
                 turnEndOn : "turnEndOn"
             }),
             ...mapActions({
@@ -148,7 +147,8 @@
                 addEscapeList : "addEscapeList",
                 setStateBox :"setStateBox",
                 thiefEnd : "thiefEnd",
-                addPoliceJudge : "addPoliceJudge",
+                toggleJudge : "toggleJudge",
+                toggleCross : "toggleCross"
 
             }),
             mainDrop: function(e){
@@ -287,14 +287,21 @@
                     escape_list = this.escape_list,
                     escape_main = escape_list.map( item => item.main),
                     count = 0,
-                    msg;
+                    msg,
+                    hasTrue = police_temp.some((item) => {
+                        return item == true;
+                    }),
+                    judge = [];
+                    police_temp.forEach((item,index) => {
+                        if(item)
+                            judge.push(index+1)
+                    });
 
-                if (police_temp.length > 0) {
+                if (hasTrue) {
                     this.turnEndOn();
                     this.changeDisabled();
-                    if (police_temp.every(val => escape_main.includes(val))) {
-                        this.changeEscapeList(police_temp)
-                        
+                    if (judge.every(val => escape_main.includes(val))) {
+                        this.changeEscapeList(judge)
                         escape_list.forEach(function(item) {
                             if(item.status)
                                 count++
@@ -314,6 +321,11 @@
                                 status: 'normal'
                             });
                         }
+                        
+                        judge.forEach((item) => {
+                            this.toggleCross(item-1);
+                        });
+                        
                     }else{
                         msg = "真可借！你這次沒有找出逃亡者的藏身地點";
                             this.setStateBox({   
@@ -322,7 +334,20 @@
                             status: 'normal'
                         });
                     }
+                } else {
+                    msg = "你沒有選擇藏身地點"
+                    this.setStateBox({   
+                        icon :'error',
+                        msg : msg , 
+                        status: 'normal'
+                    });
                 }
+                judge.forEach((item) => {
+                    this.toggleJudge(item-1);
+                });
+            },
+            toggleShowCross: function(){
+                this.showCross = !this.showCross
             }
         }
     }

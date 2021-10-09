@@ -7,12 +7,7 @@
             <div class="c-icon">
                 <div class="c-icon__i c-icon__i--draw-img c-background--full"></div>
             </div>
-            <p v-if="enemyDraw != 0" id="enemy-draw">{{enemyDraw}}</p>
-
-            <template v-if="role == 'thief'" >
-                <p id="thief-hand-list">{{thief_list.thief_hand}}</p>
-                <p id="thief-last-card">{{escape_list_last}}</p> 
-            </template>
+            <p v-if="enemyDraw != 0" id="enemy-draw">對方抽了第{{enemyDraw}}組牌庫</p>
 
             <div class="state-text">
                 <p>請選擇以下牌組以抽取一張藏身地點卡</p>
@@ -37,6 +32,15 @@
                     <p>剩餘：<span>{{deck3.length}}</span>張</p>
                 </a>
             </div>
+            
+            <div v-if="role == 'thief'" >
+                <p id="thief-hand-list">你的手牌:{{thief_list.thief_hand}}</p>
+                <p id="thief-last-card">你最後打出的藏身地點為: {{escape_list_last}}</p> 
+            </div>
+            <div v-else>
+                <p>逃亡者手牌剩餘 {{ thief_hand.length }} 張</p>
+            </div>
+
         </div>
     </div>
 </template>
@@ -109,18 +113,6 @@
 
 
 <style lang="scss" scoped>
-    #thief-hand-list{
-        position: absolute;
-        right: 35px;
-        top: 65px;
-    }
-
-    #thief-last-card{
-        position: absolute;
-        right: 35px;
-        top: 45px;
-    }
-
     #enemy-draw{
         position: absolute;
         left: 43px;
