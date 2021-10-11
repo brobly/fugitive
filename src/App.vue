@@ -56,7 +56,7 @@ export default {
         })
     },
     mounted(){
-      this.$store.dispatch('initDeck');
+      this.$store.dispatch('gameStart');
     }
 }
 </script>

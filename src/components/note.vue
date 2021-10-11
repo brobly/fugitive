@@ -8,23 +8,16 @@
                 <div class="c-icon__i c-icon__i--note-img c-background--full"></div>
             </div>   
             <h4>神探筆記</h4>
-            <table id="table-detective-select" class="card-table">
-                <thead>
-                    <tr>
-                        <td colspan="6">請剔除不需要的藏身地點已作參考</td>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="i in 7" :key="('police-selecr-tr'+i)">
-                        <td v-for="j in 6" :key="('police-select-td' + i + j)"
-                        @click="addPoliceCross( (j + (i-1) * 6) - 1 )"
-                        :class="{'cross': crossList[j + (i-1) * 6]}">
-                            {{ j + (i-1) * 6 }}
-                        </td>
-                    </tr> 
-                </tbody>
-            </table>
-           
+            <div class="card-table">
+                <p>請剔除不需要的藏身地點已作參考</p>
+                <div class="police-table police-note">
+                    <div  v-for="(i,index) in crossList" :key="('police-note' + index)" 
+                    class="police-table-item" @click="toggleCross( index )"
+                        :class="{'cross': i}">
+                            {{index + 1}}
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -48,12 +41,11 @@
                 closeBox : "closeBox",
             }),
             ...mapActions({
-                addPoliceCross : "addPoliceCross",
-            })
+                toggleCross :"toggleCross"
+            }),
         }
     }
 
 </script>
 <style lang="scss" scoped>
-
 </style>

@@ -1,10 +1,11 @@
 const store = {
     state: {
-
+        lastDraw: 0
     },
     getters: {
-
-
+        getLastDraw(state) {
+            return state.lastDraw
+        },
     },
     mutations: {
         deckDraw(state, { hand, num, item }) {
@@ -13,6 +14,7 @@ const store = {
                 item.splice(item.indexOf(random), 1);
                 hand.push(random);
                 hand = hand.sort((a, b) => a - b);
+                state.lastDraw = random
             }
         }
     },

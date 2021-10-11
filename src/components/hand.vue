@@ -75,7 +75,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="btn-group-wrap">
+                <div class="btn-group-wrap" style="margin-top: 20px;">
                     <div class="btn-group">
                         <button id="btn-card-action" :class="{'disabled': disabled}" class="btn btn-primary"
                             @click="policeAction"
@@ -132,6 +132,7 @@
         methods:{
             ...mapMutations({
                 closeBox : "closeBox",
+                clearPrev : "clearPrev",
                 reduceThiefHand  : "reduceThiefHand",
                 initTempList : "initTempList",
                 changeRole : "changeRole",
@@ -292,6 +293,7 @@
                         return item == true;
                     }),
                     judge = [];
+
                     police_temp.forEach((item,index) => {
                         if(item)
                             judge.push(index+1)
@@ -325,7 +327,6 @@
                         judge.forEach((item) => {
                             this.toggleCross(item-1);
                         });
-                        
                     }else{
                         msg = "真可借！你這次沒有找出逃亡者的藏身地點";
                             this.setStateBox({   
@@ -334,6 +335,8 @@
                             status: 'normal'
                         });
                     }
+                    this.clearPrev();
+                    
                 } else {
                     msg = "你沒有選擇藏身地點"
                     this.setStateBox({   

@@ -27,11 +27,25 @@ const store = {
     mutations: {
         turnBoxOn(state, box) {
             state.blackOn = true;
-            state.openBox = box;
+            if (box) {
+                state.openBox = box;
+            } else {
+                state.prevBox = state.openBox;
+                state.openBox = "alert"
+            }
         },
         closeBox(state) {
-            state.blackOn = false;
-            state.openBox = "";
+            if (state.prevBox == "" || state.prevBox == "alert") {
+                state.blackOn = false;
+                state.openBox = "";
+            } else {
+                state.openBox = state.prevBox;
+                state.prevBox = "";
+            }
+
+        },
+        clearPrev(state) {
+            state.prevBox = "";
         },
         setBoxIcon(state, icon) {
             state.boxIcon = icon
@@ -41,18 +55,6 @@ const store = {
         },
         setBoxState(state, status) {
             state.boxState = status;
-        },
-        turnAlertOn(state) {
-            state.blackOn = true;
-            state.prevBox = state.openBox;
-            state.openBox = "alert"
-        },
-        closeAlertBox(state) {
-            state.openBox = state.prevBox;
-            if (state.openBox == "alert") {
-                state.blackOn = false;
-                state.openBox = "";
-            }
         },
         initAlert(state) {
             state.blackOn = false,
@@ -65,7 +67,7 @@ const store = {
     },
     actions: {
         setStateBox({ commit }, payload) {
-            commit('turnAlertOn');
+            commit('turnBoxOn');
             commit('setBoxIcon', payload.icon);
             commit('setStateText', payload.msg);
             commit('setBoxState', payload.status);

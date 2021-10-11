@@ -26,6 +26,9 @@ export default new Vuex.Store({
         getDisable(state) {
             return state.disabled
         },
+        getFirstRound(state) {
+            return state.firstRound
+        },
         getThiefFirst(state) {
             return state.thiefFirst
         },
@@ -48,7 +51,7 @@ export default new Vuex.Store({
             state.disabled = !state.disabled;
         },
         changeThiefFirst(state) {
-            state.thiefFirst = false;
+            state.thiefFirst = !state.firstRound;
         },
         changeDraggable(state) {
             state.draggable = !state.draggable;
@@ -57,9 +60,11 @@ export default new Vuex.Store({
     actions: {
         thiefEnd({ commit }) {
             commit('changeDisabled');
+            commit('clearPrev');
             commit('closeBox');
             commit('turnEndOn');
             commit('changeDraggable');
+
         },
         gameStart({ commit, dispatch, state }) {
             let msg = "第一回合由逃亡者開始";
@@ -100,20 +105,20 @@ export default new Vuex.Store({
                 nextRole = roleList[0].en;
             }
 
+            if (state.firstRound && state.role == "police") {
+                commit('changeFirstRound');
+            }
             commit('changeRole', nextRole);
             commit('turnEndOn');
             commit('changeDisabled');
-            if (state.firstRound) {
+            if (nextRole == "thief")
+                commit('changeDraggable');
 
-                commit('changeFirstRound');
-                dispatch('setStateBox', ({
-                    icon: 'info',
-                    msg: msg,
-                    status: 'normal'
-                }));
-            } else {
-                commit('turnBoxOn', "draw")
-            }
+            dispatch('setStateBox', ({
+                icon: 'info',
+                msg: msg,
+                status: 'start'
+            }));
         }
     },
     modules: { deck, alert }
