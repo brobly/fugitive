@@ -205,12 +205,6 @@ i.winning {
 
 /* Police Table */
 
-#btn-show-cross {
-    position: absolute;
-    right: 35px;
-    top: 45px;
-}
-
 .police-table {
     display: flex;
     flex-wrap: wrap;
@@ -253,6 +247,10 @@ i.winning {
             background-position: center;
         }
     }
+}
+
+.confirm {
+    opacity: 0.5;
 }
 
 @media only screen and (max-width: 780px) {

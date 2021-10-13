@@ -9,7 +9,7 @@
             </div>
             <p class="text-center">這是你的手牌</p>
             <!-- <div class="timer-wrapper">計時：<div class="timer">120s</div></div> -->
-        
+            <span class="hand-last-draw" v-if="!firstRound">你剛抽到第{{lastDraw}}號卡牌</span>
             <template v-if="role=='thief'">
                 <div class="state-text">
                     <template v-if="!endOn">
@@ -123,7 +123,9 @@
                 draggable : "getDraggable",
                 thiefFirst : "getThiefFirst",
                 flipped_last : "getFlippedLastNumber",
-                crossList : "getPoliceCrossList"
+                crossList : "getPoliceCrossList",
+                firstRound : "getFirstRound",
+                lastDraw : "getLastDraw"
             }),
             rush_range(){
                 return this.escape_list_last + 3 + this.thiefList.thief_temp.speed
@@ -149,7 +151,8 @@
                 setStateBox :"setStateBox",
                 thiefEnd : "thiefEnd",
                 toggleJudge : "toggleJudge",
-                toggleCross : "toggleCross"
+                toggleCross : "toggleCross",
+                // endPOp :"endPOp"
 
             }),
             mainDrop: function(e){
@@ -254,6 +257,7 @@
                                 this.changeThiefFirst();
                             }else{
                                 this.thiefEnd();
+                                // this.endPOp();
                             }
                         }
                     }else{
@@ -325,7 +329,11 @@
                         }
                         
                         judge.forEach((item) => {
-                            this.toggleCross(item-1);
+                            let target = escape_list[escape_main.indexOf(item)];
+                            this.toggleCross(target.main -1);
+                            target.sub.forEach((num) => { 
+                                this.toggleCross(num-1);
+                            });
                         });
                     }else{
                         msg = "真可借！你這次沒有找出逃亡者的藏身地點";
@@ -380,6 +388,15 @@
         background-position: center;
         background-size: 100% 100%;
         background-repeat: no-repeat; 
-
+    }
+    #btn-show-cross {
+        position: absolute;
+        right: 35px;
+        top: 65px;
+    }
+    .hand-last-draw{
+        position: absolute;
+        right: 35px;
+        top: 52px;
     }
 </style>

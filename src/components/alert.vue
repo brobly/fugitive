@@ -1,6 +1,6 @@
 
 <template>
-    <div v-if="alertOn == 'alert'" id="alert-box" class="box containBox">
+    <div v-if="alertOn == 'alert'" id="alert-box" :class="[{'confirm' : boxState == 'confirm'}]" class="box containBox">
         <div class="content">
             <!-- icon -->
             <i v-if="boxIcon == 'info'" class="info c-background--full"></i>
@@ -42,11 +42,6 @@
                     <button @click="endUp" id="btn-end-yes" class="btn btn-primary">結束</button>
                     <button @click="closeBox" class="btn btn-primary">取消</button>
                 </div>
-            </div>
-
-            <div v-else >
-                boxState error
-                <button  @click="closeAlertBox" class="btn btn-primary">取消</button>
             </div>
         </div>
     </div>

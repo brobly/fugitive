@@ -21,6 +21,20 @@
 </template>
 
 <script>
+/* bug:
+        (Not a bug) 1. drop card to sub and then drop card to main will reset hand
+        (Done) 2. show escapeList detail and then end turn, the detail still appear
+        (Done) 3. add last draw card to hand
+        (Done) 4. draw a 0 card deck will draw a plain card
+        (disappear ) 5. draw card always draw deck1
+        (Done) 6. winning a round and then start again thief_first is false
+        7. add 執行完成popup
+        (Done) 8. police success to find escape location,but sub card not go to cross list
+        9. 29 error
+   css:
+        1. box resizeing
+        2. responsive 
+*/
 import topHeader from "./components/topHeader.vue"
 import rule from "./components/rule.vue"
 import hand from "./components/hand.vue"

@@ -51,7 +51,7 @@ export default new Vuex.Store({
             state.disabled = !state.disabled;
         },
         changeThiefFirst(state) {
-            state.thiefFirst = !state.firstRound;
+            state.thiefFirst = !state.thiefFirst;
         },
         changeDraggable(state) {
             state.draggable = !state.draggable;
@@ -64,7 +64,6 @@ export default new Vuex.Store({
             commit('closeBox');
             commit('turnEndOn');
             commit('changeDraggable');
-
         },
         gameStart({ commit, dispatch, state }) {
             let msg = "第一回合由逃亡者開始";
@@ -111,6 +110,7 @@ export default new Vuex.Store({
             commit('changeRole', nextRole);
             commit('turnEndOn');
             commit('changeDisabled');
+            commit('changeCurrentTab');
             if (nextRole == "thief")
                 commit('changeDraggable');
 

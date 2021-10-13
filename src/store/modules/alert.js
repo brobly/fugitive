@@ -71,7 +71,19 @@ const store = {
             commit('setBoxIcon', payload.icon);
             commit('setStateText', payload.msg);
             commit('setBoxState', payload.status);
-        }
+        },
+        // endPOp({ commit, dispatch }) {
+        //     let msg = "行動已執行";
+
+        //     dispatch('setStateBox', ({
+        //         icon: 'info',
+        //         msg: msg,
+        //         status: 'confirm'
+        //     }));
+        //     setTimeout(() => {
+        //         commit('closeBox');
+        //     }, 1000)
+        // },
     },
     modules: {}
 }

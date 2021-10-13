@@ -24,7 +24,8 @@ const store = {
             "sub": [],
             "speed": 0
         }],
-        crossList: []
+        crossList: [],
+        currentTab: null
     },
     getters: {
         getSpeedList(state) {
@@ -68,7 +69,10 @@ const store = {
                 return (item.status == true)
             });
             return flipped[flipped.length - 1].main;
-        }
+        },
+        getCurrentTab(state) {
+            return state.currentTab
+        },
     },
     mutations: {
         setSpeedList(state, random) {
@@ -125,6 +129,14 @@ const store = {
                 idx = main.indexOf(item);
                 state.escape_list[idx].status = true;
             });
+        },
+        changeCurrentTab(state, idx) {
+            if (idx) {
+                state.currentTab = idx;
+            } else {
+                state.currentTab = null;
+            }
+
         },
         toggleJudge(state, idx) {
             const res = !state.police_temp[idx];

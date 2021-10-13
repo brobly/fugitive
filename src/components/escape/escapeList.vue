@@ -12,7 +12,7 @@
             <card :number='item.main' :front="(item.status) ? 'card-front' : 'card-back'"
             main="card-main" :flipped="(item.status) ? 'is-flipped' : ''" ></card>
 
-            <div v-if="currentTab == index && isDisplay" class="number-detail">
+            <div v-if="currentTab == index" class="number-detail">
                 <p>地點："{{item.main}}"</p>
                 <p>搭配："<span>{{item.sub.toString()}}</span>"(加速:{{item.speed}}步)</p>
             </div>
@@ -21,14 +21,12 @@
 </template>
 
 <script>
-    import { mapGetters } from "vuex"
+    import { mapGetters, mapMutations } from "vuex"
     import card from "../card.vue"
     export default {
         name: 'escapeList',
         data(){
             return{
-                isDisplay: false,
-                currentTab : 0
             }
         },
         components:{
@@ -38,14 +36,16 @@
             ...mapGetters({
                 role : "getRole",
                 escape_list : "getEscapeList",
-            })
+                currentTab : "getCurrentTab"
+            }),
         },
         methods:{
+            ...mapMutations({
+                changeCurrentTab : "changeCurrentTab"
+            }),
             displayAllNum:function(status,index){
                 if(this.role == "thief" || (this.role == "police" && status)){
-                    this.currentTab = index;
-                    this.isDisplay = true
-
+                    this.changeCurrentTab(index);
                 }
             }
         }
