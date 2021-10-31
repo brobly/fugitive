@@ -13,7 +13,8 @@ export default new Vuex.Store({
         firstRound: true,
         thiefFirst: true,
         draggable: true,
-        disabled: false
+        disabled: false,
+        special: false
 
     },
     getters: {
@@ -35,6 +36,9 @@ export default new Vuex.Store({
         getDraggable(state) {
             return state.draggable
         },
+        getSpecial(state) {
+            return state.special
+        }
 
     },
     mutations: {
@@ -56,14 +60,23 @@ export default new Vuex.Store({
         changeDraggable(state) {
             state.draggable = !state.draggable;
         },
+        changeSpecial(state) {
+            state.special = !state.special;
+        },
     },
     actions: {
-        thiefEnd({ commit }) {
+        thiefEnd({ commit, dispatch }) {
             commit('changeDisabled');
-            commit('clearPrev');
-            commit('closeBox');
             commit('turnEndOn');
             commit('changeDraggable');
+            let msg = `你的行動已執行完成！`;
+            dispatch('setStateBox', {
+                icon: 'success',
+                msg: msg,
+                status: 'normal',
+                size: 'small'
+            });
+            commit('clearPrev');
         },
         gameStart({ commit, dispatch, state }) {
             let msg = "第一回合由逃亡者開始";
@@ -74,6 +87,8 @@ export default new Vuex.Store({
                 commit('changeDisabled');
             if (state.endOn)
                 commit('turnEndOn');
+            if (state.special)
+                commit('changeSpecial');
             if (!state.firstRound)
                 commit('changeFirstRound');
             if (!state.draggable)
@@ -85,7 +100,8 @@ export default new Vuex.Store({
             dispatch('setStateBox', ({
                 icon: 'info',
                 msg: msg,
-                status: 'start'
+                status: 'start',
+                size: "small"
             }));
 
         },
@@ -117,9 +133,21 @@ export default new Vuex.Store({
             dispatch('setStateBox', ({
                 icon: 'info',
                 msg: msg,
-                status: 'start'
+                status: 'start',
+                size: "medium"
             }));
-        }
+        },
+        spacialStart({ commit, state }) {
+            commit('changeSpecial');
+            commit('changeCurrentTab');
+            commit('changeRole', "police");
+            if (state.disabled)
+                commit('changeDisabled');
+            if (state.endOn)
+                commit('turnEndOn');
+
+            commit('turnBoxOn', 'hand')
+        },
     },
     modules: { deck, alert }
 });

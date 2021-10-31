@@ -5,7 +5,8 @@ const store = {
         boxIcon: "",
         stateText: "",
         boxState: "",
-        prevBox: ""
+        prevBox: "",
+        boxSize: ""
     },
     getters: {
         getBlackOn(state) {
@@ -22,6 +23,9 @@ const store = {
         },
         getBoxState(state) {
             return state.boxState
+        },
+        getBoxSize(state) {
+            return state.boxSize
         },
     },
     mutations: {
@@ -56,6 +60,11 @@ const store = {
         setBoxState(state, status) {
             state.boxState = status;
         },
+        setBoxSize(state, size) {
+            if (typeof size != 'undefined') {
+                state.boxSize = size;
+            }
+        },
         initAlert(state) {
             state.blackOn = false,
                 state.openBox = "",
@@ -71,9 +80,10 @@ const store = {
             commit('setBoxIcon', payload.icon);
             commit('setStateText', payload.msg);
             commit('setBoxState', payload.status);
+            commit('setBoxSize', payload.size);
         },
         // endPOp({ commit, dispatch }) {
-        //     let msg = "行動已執行";
+        //     let msg = "行動已執行完成";
 
         //     dispatch('setStateBox', ({
         //         icon: 'info',

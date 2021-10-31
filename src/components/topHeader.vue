@@ -31,11 +31,12 @@ export default {
           box-shadow: 0px 5px 10px;
       }
       .l-header__title{
-          width:100%;
+          display: flex;
+          width:100%;    
+          align-items: center;
       }
       .l-header__title h1{
             color: #efefef;
-            line-height: 1.8em;
             font-size: 2rem;
             margin: 0;
       }
@@ -47,9 +48,8 @@ export default {
       }
 
       .user-info__account-desc{    
-            font-size: 1.3em;
-            line-height: 2.3;
-            margin-left: 10px;
+            font-size: 1.3rem;
+            margin-left: 0.625rem;
       }
 
 
@@ -59,15 +59,9 @@ export default {
       }
 
     .c-icon__i--account-img{
-          background-image: url(../assets/images/account.png);
-        height: 25px;
-        width: 25px;
+        background-image: url(../assets/images/account.png);
+        height: 1.562rem;
+        width:1.562rem;
     }
 
-    @media only screen and (max-width: 480px) {
-        .user-info__account-desc{    
-            font-size: 1.1em;
-            line-height: 2.4;
-        }
-    }
 </style>

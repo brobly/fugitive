@@ -62,7 +62,7 @@
 .deck-list {
   h4 {
     text-align: center;
-    font-size: 22px;
+    font-size: 1.3rem;
     margin-bottom: 2px;
     width: 80px;
   }
@@ -72,8 +72,35 @@
   }
 
   .deck p {
-    font-size: 15px;
+    font-size: 1rem;
     text-align: center;
+  }
+}
+
+@media only screen and (max-width: 420px) {
+  .deck-list{
+    display: flex;
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+    width: 100%;
+    padding: 5px 0px 0px;
+    border: 0px;
+    border-top: 3px dashed #ccc;
+    .deck{
+        border-bottom: 0px;
+        display: block;
+        margin-bottom: 0px;
+        border-right: 3px dashed #ccc;
+        width: 33%;
+        h4{
+          width:100%;
+        }
+        p{
+          font-size: 1.1rem;
+          margin-bottom: 0.5rem;
+        }
+    }
   }
 }
 

@@ -2,7 +2,7 @@ function range(start, end) {
     return Array(end - start + 1).fill().map((_, idx) => start + idx);
 }
 
-import draw from "./drawCard.js"
+import card from "./card.js"
 const store = {
     state: {
         deck1: [],
@@ -25,7 +25,8 @@ const store = {
             "speed": 0
         }],
         crossList: [],
-        currentTab: null
+        currentTab: null,
+        dragedNum: 0,
     },
     getters: {
         getSpeedList(state) {
@@ -73,6 +74,9 @@ const store = {
         getCurrentTab(state) {
             return state.currentTab
         },
+        getdragedNum(state) {
+            return state.draged
+        }
     },
     mutations: {
         setSpeedList(state, random) {
@@ -138,6 +142,9 @@ const store = {
             }
 
         },
+        changeDraged(state, id) {
+            state.draged = id;
+        },
         toggleJudge(state, idx) {
             const res = !state.police_temp[idx];
             state.police_temp.splice(idx, 1, res);
@@ -191,7 +198,7 @@ const store = {
         },
 
     },
-    modules: { draw }
+    modules: { card }
 }
 
 export default store

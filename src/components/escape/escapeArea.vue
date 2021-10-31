@@ -23,7 +23,7 @@
         <div v-if="endOn" id="js-end-turn--visible">
             <span style="padding-right: 15px;">請點擊結束回合</span>
             <button id="btn-end-turn" 
-            @click="setStateBox({icon :'info', msg : '確定結束回合嗎' , status: 'end'});"
+            @click="setStateBox({icon :'info', msg : '確定結束回合嗎' , status: 'end', size :'small'});"
             class="btn btn-primary">結束回合</button>
         </div>
     </div>
@@ -69,7 +69,6 @@ import deckListVertical from "./deckListVertical.vue"
     }
  
     .desk-wrapper{
-        margin: 20px 0px; 
         display: flex;
         width: calc(100% - 100px);
     }
@@ -83,5 +82,12 @@ import deckListVertical from "./deckListVertical.vue"
         position: absolute;
         right: 35px;
         bottom: 45px;
+    }
+
+    @media only screen and (max-width: 420px) {
+        #js-end-turn--visible{
+            right: 0.625rem;
+            bottom: 10rem;
+        }
     }
 </style>

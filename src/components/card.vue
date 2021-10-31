@@ -8,12 +8,13 @@
 <template>
     <div class="card-wrapper">
         <a :id="('card-' + number)" class="card" :class="[main, flipped]" href="javascript:void(0)"
-          :draggable="draggable" @dragstart="dragStart" @dragover.stop>
+          :draggable="draggable" @dragstart="dragStart" @dragover.stop
+           @touchstart.stop="dragStart" @touchmove.stop="touchMove" @touchend="$emit('mobileEnd')">
             
             <div class="card-face" :class="front">
                 <template v-if="front == 'card-front'">
                   <div :class="{[('speed-') + foot] : foot}" class="speed-up full-bg"></div>
-                  <div class="number-c">{{number}}</div>
+                  <div class="number-c" :class="{ 'no-foot': ( number == 0 || number == 42)}">{{number}}</div>
                 </template>
             </div>
             
@@ -21,10 +22,13 @@
     </div>
 </template>
 <script>
+    import {mapGetters , mapMutations} from "vuex"
+    var mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent);
     export default {
         name: 'card',
         data(){
             return{
+              cy :0
             }
         },
         props:{
@@ -40,11 +44,39 @@
         },
         components:{
         },
+        computed:{
+          ...mapGetters({
+              dragTarget : "getDragTarget"
+          })
+        },
         methods:{
-          dragStart:e=>{
-              const target = e.target;
-              e.dataTransfer.setData('card_id',target.id);
-          }
+          ...mapMutations({
+              changeDragedNum : "changeDragedNum",
+              changeDragTarget : "changeDragTarget",
+              changeDrgRect : "changeDrgRect",
+          }),
+          dragStart:function(e){
+            if(this.draggable){
+              this.changeDragTarget(e.currentTarget);
+              const id = this.dragTarget.id.slice(5);
+              this.changeDragedNum(id);
+              
+              if(mobile){
+                this.cy = 100;
+                this.dragTarget.parentNode.style.position = "absolute";
+                this.dragTarget.parentNode.style.zIndex = "2";
+              }
+            }
+          },
+          touchMove:function(e){
+            
+            if(this.draggable){
+              let dragTarget = this.dragTarget;
+              dragTarget.parentNode.style.left = e.touches[0].clientX - dragTarget.clientWidth  + "px";
+              dragTarget.parentNode.style.top = e.touches[0].clientY - dragTarget.clientHeight - this.cy + "px";
+              this.changeDrgRect(dragTarget.getBoundingClientRect());
+            }
+         }
         }
     }
 </script>
@@ -52,9 +84,9 @@
 <style lang="scss" scoped>
 .card-wrapper {
   position: relative;
-  width: 54px;
-  height: 70px;
-  margin: 0 8px;
+  width: 3.375rem;
+  height: 4.375rem;
+  margin: 0 0.5rem;
   -webkit-perspective: 600px;
   perspective: 600px;
 }
@@ -112,8 +144,8 @@
   position: absolute;
   top: 7px;
   right: 7px;
-  width: 15px;
-  height: 15px;
+  width: 1rem;
+  height: 1rem;
   opacity: 0.6;
   text-indent: -999px;
   font-size: 0px;
@@ -129,8 +161,11 @@
 
 .number-c {
   text-align: center;
-  font-size: 24px;
-  padding-top: 23px;
+  font-size: 1.5rem;
+  padding-top: 1.6rem;
+  &.no-foot{
+    padding-top: 1.5rem;
+  }
 }
 
 .card-sub {
@@ -145,6 +180,20 @@
 
   &.s-sub {
     background-image: url(#{$assetPath}/border-silver.png);
+  }
+}
+
+
+
+@media only screen and (max-width: 420px) {
+
+  .number-c {
+    &.no-foot{
+      padding-top: 1.3rem;
+    }
+  }
+  .card-sub{
+    top: 3.9rem;
   }
 }
 </style>

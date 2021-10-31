@@ -1,45 +1,48 @@
 
 <template>
   <div v-show="drawOn=='draw' " id="draw-box" class="box containBox">
-        <div class="content">
-            <div class="c-icon">
-                <div class="c-icon__i c-icon__i--draw-img c-background--full"></div>
-            </div>
-            <p v-if="enemyDraw != 0" id="enemy-draw">對方抽了第{{enemyDraw}}組牌庫</p>
+      
+        <div class="wrapper">
+            <div class="content">
+                <div class="c-icon">
+                    <div class="c-icon__i c-icon__i--draw-img c-background--full"></div>
+                </div>
+                <p v-if="enemyDraw != 0" id="enemy-draw">對方抽了第{{enemyDraw}}組牌庫</p>
 
-            <div class="state-text">
-                <p>請選擇以下牌組以抽取一張藏身地點卡</p>
-            </div>
-            <div class="draw-list">
-                <a id="deck1" class="draw-deck" @click="decktoHand($event,deck1)"
-                 :class="{'deskDisabled': drawDisable1}">
-                    <h4>04 - 14</h4>
-                    <card front='card-back'></card>
-                    <p>剩餘：<span>{{deck1.length}}</span>張</p>
-                </a>
-                <a id="deck2" class="draw-deck" @click="decktoHand($event, deck2)" 
-                 :class="{'deskDisabled': drawDisable2}">
-                    <h4>15 - 28</h4>
-                    <card front='card-back'></card>
-                    <p>剩餘：<span>{{deck2.length}}</span>張</p>
-                </a>
-                <a id="deck3" class="draw-deck" @click="decktoHand($event, deck3)" 
-                 :class="{'deskDisabled': drawDisable3}">
-                    <h4>29 - 41</h4>
-                    <card front='card-back'></card>
-                    <p>剩餘：<span>{{deck3.length}}</span>張</p>
-                </a>
-            </div>
-            <p v-if="role == 'thief'" id="thief-hand-list">你的手牌:{{thief_list.thief_hand}}</p>
-            <p v-else id="police-hand-list">你的手牌:{{police_list.police_hand}}</p>
+                <div class="state-text">
+                    <p>請選擇以下牌組以抽取一張藏身地點卡</p>
+                </div>
+                <div class="draw-list">
+                    <a id="deck1" class="draw-deck" @click="decktoHand($event,deck1)"
+                    :class="{'deskDisabled': drawDisable1}">
+                        <h4>04 - 14</h4>
+                        <card front='card-back'></card>
+                        <p>剩餘：<span>{{deck1.length}}</span>張</p>
+                    </a>
+                    <a id="deck2" class="draw-deck" @click="decktoHand($event, deck2)" 
+                    :class="{'deskDisabled': drawDisable2}">
+                        <h4>15 - 28</h4>
+                        <card front='card-back'></card>
+                        <p>剩餘：<span>{{deck2.length}}</span>張</p>
+                    </a>
+                    <a id="deck3" class="draw-deck" @click="decktoHand($event, deck3)" 
+                    :class="{'deskDisabled': drawDisable3}">
+                        <h4>29 - 41</h4>
+                        <card front='card-back'></card>
+                        <p>剩餘：<span>{{deck3.length}}</span>張</p>
+                    </a>
+                </div>
+                <p v-if="role == 'thief'" id="thief-hand-list">你的手牌:{{thief_list.thief_hand}}</p>
+                <p v-else id="police-hand-list">你的手牌:{{police_list.police_hand}}</p>
 
-            <div v-if="role == 'thief'" >
-                <p id="thief-last-card">你最後打出的藏身地點為: {{escape_list_last}}</p> 
-            </div>
-            <div v-else>
-                <p>逃亡者手牌剩餘 {{ thief_list.thief_hand.length }} 張</p>
-            </div>
+                <div v-if="role == 'thief'" >
+                    <p id="thief-last-card">你最後打出的藏身地點為: {{escape_list_last}}</p> 
+                </div>
+                <div v-else>
+                    <p>逃亡者手牌剩餘 {{ thief_list.thief_hand.length }} 張</p>
+                </div>
 
+            </div>
         </div>
     </div>
 </template>
@@ -183,6 +186,22 @@
             margin-bottom: 0px;
             min-width: 90px;
             text-align: center;
+        }
+    }
+    @media only screen and (max-width: 420px) {
+        #enemy-draw{
+            position: relative;
+            left:0px;
+            top:0px;
+        }
+        .draw-list{
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+        .draw-deck {
+            padding: 0rem;
+            margin: 0 0.3rem 0.6rem;
         }
     }
 </style>
