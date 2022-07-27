@@ -102,22 +102,20 @@
                 thiefEnd : "thiefEnd",
                 // endPOp :"endPOp"
             }),
-            resetThiefAction : function(type){
+            resetThiefAction : function(){
                 const {thiefList, addThiefHand, initThifeTemp} = this
                 const main = thiefList.thief_temp.main,
                       sub = thiefList.thief_temp.sub
-
                 let card = sub;
-                if( main != null ){
-                     card = [...sub, main];
-                }
+                if(main !=null) card=[...sub, main];
+
                 addThiefHand(card);
-                initThifeTemp(type);
+                initThifeTemp();
             },
-            mainDrop: async function(){
+            mainDrop: function(){
                 const {dragedNum, rush_range, 
-                thiefList, setStateBox, resetThiefAction, 
-                escape_list_last, addThiefTemp, reduceThiefHand} = this
+                thiefList, setStateBox, addThiefHand, 
+                escape_list_last, addThiefTemp, initThifeTemp, reduceThiefHand} = this
                 
                 const newMain = parseInt(dragedNum)
                 let msg;
@@ -147,10 +145,11 @@
                 const currMain = thiefList.thief_temp.main
 
                 if( currMain !== null){
-                    await resetThiefAction('main');
+                    addThiefHand([currMain]);
+                    initThifeTemp('main')
                 }
-                await addThiefTemp({'main':newMain});
-                await reduceThiefHand(newMain);
+                addThiefTemp({'main':newMain});
+                reduceThiefHand(newMain);
             },
             subDrop: function(){
                 const {dragedNum, setStateBox, addThiefTemp, reduceThiefHand} = this
@@ -213,7 +212,7 @@
                     
                     if(data.main <= rush_range){
                         addEscapeList(data);
-                        initThifeTemp();
+                        initThifeTemp(false);
 
                         //判斷遊戲結束
                         if(data.main == 42){
