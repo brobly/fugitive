@@ -22,7 +22,7 @@
     </div>
 </template>
 <script>
-    import {mapGetters , mapMutations} from "vuex"
+    import { mapMutations, mapGetters} from "vuex"
     var mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent);
     export default {
         name: 'card',
@@ -46,7 +46,7 @@
         },
         computed:{
           ...mapGetters({
-              dragTarget : "getDragTarget"
+              dragTarget: 'getDragTarget'
           })
         },
         methods:{

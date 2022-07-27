@@ -7,25 +7,20 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
     state: {
-        phase: 0,
         role: "thief",
-        endOn: false,
-        firstRound: true,
-        thiefFirst: true,
-        draggable: true,
-        disabled: false,
+        endOn: false, // 決定是否出現結束回合彈窗
+        firstRound: true, // 決定是否遊戲第一回合
+        thiefFirst: true,  // 決定是否逃亡者第一回合
+        draggable: true, // 決定可否拖放卡牌
+        invalid: false, // 決定是否不能向卡牌作互動
         special: false
-
     },
-    getters: {
+    getters:{
         getRole(state) {
             return state.role
         },
         getEndOn(state) {
             return state.endOn
-        },
-        getDisable(state) {
-            return state.disabled
         },
         getFirstRound(state) {
             return state.firstRound
@@ -36,10 +31,12 @@ export default new Vuex.Store({
         getDraggable(state) {
             return state.draggable
         },
+        getInvalid(state) {
+            return state.invalid
+        },
         getSpecial(state) {
             return state.special
-        }
-
+        },
     },
     mutations: {
         changeRole(state, role) {
@@ -51,8 +48,8 @@ export default new Vuex.Store({
         changeFirstRound(state) {
             state.firstRound = !state.firstRound;
         },
-        changeDisabled(state) {
-            state.disabled = !state.disabled;
+        changeInvalid(state) {
+            state.invalid = !state.invalid;
         },
         changeThiefFirst(state) {
             state.thiefFirst = !state.thiefFirst;
@@ -65,26 +62,26 @@ export default new Vuex.Store({
         },
     },
     actions: {
-        thiefEnd({ commit, dispatch }) {
-            commit('changeDisabled');
-            commit('turnEndOn');
-            commit('changeDraggable');
+        async thiefEnd({ commit, dispatch }) {
+            await commit('changeInvalid');
+            await commit('turnEndOn');
+            await commit('changeDraggable');
             let msg = `你的行動已執行完成！`;
-            dispatch('setStateBox', {
+            await dispatch('setStateBox', {
                 icon: 'success',
                 msg: msg,
                 status: 'normal',
                 size: 'small'
             });
-            commit('clearPrev');
+            await commit('clearPrev');
         },
-        gameStart({ commit, dispatch, state }) {
-            let msg = "第一回合由逃亡者開始";
+        gameReset({ commit, dispatch, state }) {
             commit('changeRole', "thief");
+            dispatch('initDeck');
             commit('initAlert');
 
-            if (state.disabled)
-                commit('changeDisabled');
+            if (state.invalid)
+                commit('changeInvalid');
             if (state.endOn)
                 commit('turnEndOn');
             if (state.special)
@@ -95,15 +92,17 @@ export default new Vuex.Store({
                 commit('changeDraggable');
             if (!state.thiefFirst)
                 commit('changeThiefFirst');
-
-            dispatch('initDeck');
-            dispatch('setStateBox', ({
-                icon: 'info',
-                msg: msg,
-                status: 'start',
-                size: "small"
-            }));
-
+        },
+        gameStart({dispatch}) {
+            setTimeout(function(){
+                let msg = "遊戲開始，第一回合由逃亡者開始";
+                dispatch('setStateBox', ({
+                    icon: 'info',
+                    msg: msg,
+                    status: 'start',
+                    size: "small"
+                }));
+            },1000)
         },
         endUp({ commit, dispatch, state }) {
 
@@ -125,7 +124,7 @@ export default new Vuex.Store({
             }
             commit('changeRole', nextRole);
             commit('turnEndOn');
-            commit('changeDisabled');
+            commit('changeInvalid');
             commit('changeCurrentTab');
             if (nextRole == "thief")
                 commit('changeDraggable');
@@ -141,8 +140,8 @@ export default new Vuex.Store({
             commit('changeSpecial');
             commit('changeCurrentTab');
             commit('changeRole', "police");
-            if (state.disabled)
-                commit('changeDisabled');
+            if (state.invalid)
+                commit('changeInvalid');
             if (state.endOn)
                 commit('turnEndOn');
 

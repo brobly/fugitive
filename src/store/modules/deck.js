@@ -12,8 +12,8 @@ const store = {
         speedList: [],
         thief_hand: [1, 2, 3, 42],
         thief_temp: {
-            mainKey: null,
-            subNo: [],
+            main: null,
+            sub: [],
             speed: 0
         },
         police_hand: [],
@@ -26,12 +26,8 @@ const store = {
         }],
         crossList: [],
         currentTab: null,
-        dragedNum: 0,
     },
     getters: {
-        getSpeedList(state) {
-            return state.speedList
-        },
         getDeck1(state) {
             return state.deck1
         },
@@ -41,11 +37,8 @@ const store = {
         getDeck3(state) {
             return state.deck3
         },
-        getWhole(state) {
-            return state.whole
-        },
-        getEscapeList(state) {
-            return state.escape_list
+        getSpeedList(state) {
+            return state.speedList
         },
         getThiefList(state) {
             return {
@@ -56,8 +49,11 @@ const store = {
         getPoliceList(state) {
             return {
                 police_hand: state.police_hand,
-                police_temp: state.police_temp,
+                police_temp: state.police_temp
             }
+        },
+        getEscapeList(state) {
+            return state.escape_list
         },
         getEscapeLastNumber(state) {
             return state.escape_list[state.escape_list.length - 1].main
@@ -73,9 +69,6 @@ const store = {
         },
         getCurrentTab(state) {
             return state.currentTab
-        },
-        getdragedNum(state) {
-            return state.draged
         }
     },
     mutations: {
@@ -98,29 +91,40 @@ const store = {
             }];
             state.crossList = Array(42).fill().map(() => false);
         },
-        initTempList(state) {
-            state.thief_temp = {
-                mainKey: null,
-                subNo: [],
-                speed: 0
+        initThifeTemp(state,type) {
+            switch(type){
+                case 'main':
+                    state.thief_temp.main = null;
+                break;
+                case 'sub':
+                    state.thief_temp.sub = [];
+                break;
+                default:
+                    state.thief_temp = {
+                        main: null,
+                        sub: [],
+                        speed: 0
+                    }
             }
-            state.police_temp = Array(42).fill().map(() => false);
 
+        },
+        initPoliceTemp(state) {
+            state.police_temp = Array(42).fill().map(() => false);
         },
         addEscapeList(state, data) {
             state.escape_list.push(data);
         },
         addThiefTemp(state, payload) {
-            if (state.thief_temp.mainKey == null) {
-                state.thief_temp.mainKey = payload.main;
+            if (payload.main != undefined || payload.main != null) {
+                state.thief_temp.main = payload.main;
             }
-            if (typeof payload.sub != "undefined") {
-                state.thief_temp.subNo.push(payload.sub);
+            if (typeof payload.sub !== "undefined") {
+                state.thief_temp.sub.push(payload.sub);
                 state.thief_temp.speed += state.speedList[payload.sub - 1];
             }
         },
         addThiefHand(state, array) {
-            state.thief_hand = state.thief_hand.concat(array);
+            state.thief_hand = [...state.thief_hand, ...array];
             state.thief_hand = state.thief_hand.sort((a, b) => a - b);
         },
         reduceThiefHand(state, num) {
@@ -161,7 +165,8 @@ const store = {
                 var random = Math.floor(Math.random() * 2) + 1;
                 commit('setSpeedList', random);
             });
-            commit('initTempList');
+            commit('initThifeTemp');
+            commit('initPoliceTemp');
             commit('deckDraw', {
                 'hand': state.thief_hand,
                 'num': 3,

@@ -34,7 +34,7 @@
         },
         computed:{
             ...mapGetters({
-                role : "getRole",
+                role:"getRole",
                 escape_list : "getEscapeList",
                 currentTab : "getCurrentTab"
             }),

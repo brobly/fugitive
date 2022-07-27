@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "dev": "vue-cli-service serve --mode developer",
+    "prod": "vue-cli-service serve --mode production",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
@@ -11,6 +13,8 @@
     "bootstrap": "^5.1.0",
     "bootstrap-vue": "^2.21.2",
     "core-js": "^3.6.5",
+    "env-cmd": "^10.1.0",
+    "nanoid": "^4.0.0",
     "vue": "^2.6.11",
     "vuex": "^3.6.2"
   },

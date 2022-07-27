@@ -7,30 +7,30 @@ const store = {
         mainDrp: '',
         subDrp: ''
     },
-    getters: {
+    getters:{
         getLastDraw(state) {
-            return state.lastDraw
+            return state.lastDraw;
         },
         getDragedNum(state) {
-            return state.dragedNum
+            return state.dragedNum;
         },
         getDragTarget(state) {
-            return state.dragTarget
+            return state.dragTarget;
         },
         getDrgRect(state) {
-            return state.drgRect
+            return state.drgRect;
         },
         getMainDrp(state) {
-            return state.drp
+            return state.mainDrp;
         },
         getSubDrp(state) {
-            return state.drp
-        }
+            return state.subDrp;
+        },
     },
     mutations: {
         deckDraw(state, { hand, num, item }) {
             for (let i = 0; i < num; i++) {
-                var random = item[Math.floor(Math.random() * item.length)];
+                const random = item[Math.floor(Math.random() * item.length)];
                 item.splice(item.indexOf(random), 1);
                 hand.push(random);
                 hand = hand.sort((a, b) => a - b);

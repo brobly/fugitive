@@ -8,7 +8,7 @@
                 <i v-if="boxIcon == 'info'" class="info c-background--full"></i>
                 <i v-else class="full-bg" :class="boxIcon"></i>
 
-                <!-- role -->
+                <!-- role win-->
                 <h2 v-if="boxState == 'win'" id="role-winning">{{role}}勝利!!!</h2>
 
                 <!-- desc -->
@@ -39,7 +39,7 @@
 
                 <div v-else-if="boxState == 'win'" id="btn-win-group" class="btn-group-wrap">
                     <div class="btn-group">
-                        <button @click="gameStart" class="btn btn-primary">再來一局</button>
+                        <button @click="gameReset" class="btn btn-primary">再來一局</button>
                     </div>
                 </div>
 
@@ -72,11 +72,11 @@
         methods:{
             ...mapMutations({
                 turnBoxOn : "turnBoxOn",
-                closeBox : "closeBox"
+                closeBox : "closeBox",
             }),
             ...mapActions({
                 thiefEnd: "thiefEnd",
-                gameStart: "gameStart",
+                gameReset: "gameReset",
                 endUp :"endUp",
                 spacialStart:"spacialStart"
             }),

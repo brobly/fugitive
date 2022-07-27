@@ -36,7 +36,7 @@
                 deck1 :"getDeck1",
                 deck2 :"getDeck2",
                 deck3 :"getDeck3",
-            })
+            }),
         },
     }
 </script>

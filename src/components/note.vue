@@ -13,7 +13,7 @@
                 <div class="card-table">
                     <p>請剔除不需要的藏身地點已作參考</p>
                     <div class="police-table police-note">
-                        <div  v-for="(i,index) in crossList" :key="('police-note' + index)" 
+                        <div v-for="(i,index) of crossList" :key="('police-note' + index)" 
                         class="police-table-item" @click="toggleCross( index )"
                             :class="{'cross': i}">
                                 {{index + 1}}
@@ -37,7 +37,7 @@
             ...mapGetters({
                 noteOn : "getBoxOn",
                 crossList : "getPoliceCrossList"
-            })
+            }),
         },
         methods:{
             ...mapMutations({

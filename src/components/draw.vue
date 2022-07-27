@@ -14,19 +14,19 @@
                 </div>
                 <div class="draw-list">
                     <a id="deck1" class="draw-deck" @click="decktoHand($event,deck1)"
-                    :class="{'deskDisabled': drawDisable1}">
+                    :class="{'deskInvalidd': drawDisable1}">
                         <h4>04 - 14</h4>
                         <card front='card-back'></card>
                         <p>剩餘：<span>{{deck1.length}}</span>張</p>
                     </a>
                     <a id="deck2" class="draw-deck" @click="decktoHand($event, deck2)" 
-                    :class="{'deskDisabled': drawDisable2}">
+                    :class="{'deskInvalid': drawDisable2}">
                         <h4>15 - 28</h4>
                         <card front='card-back'></card>
                         <p>剩餘：<span>{{deck2.length}}</span>張</p>
                     </a>
                     <a id="deck3" class="draw-deck" @click="decktoHand($event, deck3)" 
-                    :class="{'deskDisabled': drawDisable3}">
+                    :class="{'deskInvalid': drawDisable3}">
                         <h4>29 - 41</h4>
                         <card front='card-back'></card>
                         <p>剩餘：<span>{{deck3.length}}</span>張</p>
@@ -68,16 +68,15 @@
         },
         computed:{
             ...mapGetters({
-                role:"getRole",
-                drawOn : "getBoxOn",
-                deck1 :"getDeck1",
-                deck2 :"getDeck2",
-                deck3 :"getDeck3",
-                lastDraw : "getLastDraw",
                 thief_list : "getThiefList",
                 police_list : "getPoliceList",
                 escape_list_last : "getEscapeLastNumber",
-
+                deck1 :"getDeck1",
+                deck2 :"getDeck2",
+                deck3 :"getDeck3",
+                role:"getRole",
+                drawOn : "getBoxOn",
+                lastDraw : "getLastDraw",
             })
         },
         methods:{
@@ -90,7 +89,6 @@
             }),
             decktoHand:function(e,item){
                 if(item.length >= 1){
-                    
                     let hand;
                     if(this.role == "thief"){
                         hand = this.thief_list.thief_hand;
@@ -159,7 +157,7 @@
             border-color:#007bff;
             box-shadow: 0px 0px 10px;
         }
-        &.deskDisabled{
+        &.deskInvalid{
             border-color: #ccc;
             color: #aaa;
             cursor: default;

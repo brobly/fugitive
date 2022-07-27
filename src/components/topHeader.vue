@@ -1,20 +1,26 @@
 <template>
-<div class="l-header">
-    <div class="l-header__title">
-        <h1>神探緝兇</h1>
-    </div>
-    <div class="l-header__user-info">
-        <div class="c-icon">
-            <div class="c-icon__i c-icon__i--account-img c-background--full"></div>
+    <div class="l-header">
+        <div class="l-header__title">
+            <!-- <h1>神探緝兇{{vueEnv}}</h1> -->
+            <h1>神探緝兇</h1>
         </div>
-        <div class="user-info__account-desc">Johnny Lau</div>
+        <div class="l-header__user-info">
+            <div class="c-icon">
+                <div class="c-icon__i c-icon__i--account-img c-background--full"></div>
+            </div>
+            <div class="user-info__account-desc">Johnny Lau</div>
+        </div>
     </div>
-</div>
 </template>
 
 <script>
 export default {
   name: 'topHeader',
+  data(){
+    return{
+        // vueEnv : process.env.VUE_APP_ENV
+    }
+  },
   props: {
   }
 }

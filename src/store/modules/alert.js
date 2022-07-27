@@ -46,7 +46,6 @@ const store = {
                 state.openBox = state.prevBox;
                 state.prevBox = "";
             }
-
         },
         clearPrev(state) {
             state.prevBox = "";

@@ -29,7 +29,7 @@
     </div>
 </template>
 <script>
-import { mapGetters, mapActions } from "vuex"
+import { mapActions, mapGetters } from "vuex"
 import escapeList from "./escapeList.vue"
 import deckListVertical from "./deckListVertical.vue"
     export default {
