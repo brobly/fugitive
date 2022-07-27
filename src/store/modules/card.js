@@ -5,7 +5,7 @@ const store = {
         dragTarget: '',
         drgRect: '',
         mainDrp: '',
-        subDrp: ''
+        subDrp: '',
     },
     getters:{
         getLastDraw(state) {

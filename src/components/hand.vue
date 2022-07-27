@@ -3,7 +3,7 @@
   <div v-show="handOn=='hand' " id="hand-box" class="box containBox">
        <a class="btn-close-box" 
        @click="closeBox" href="javascript:void(0)"></a>
-        <div class="wrapper">
+        <div ref="hand" class="wrapper">
             <div class="content">
                 <div class="c-icon">
                     <div class="c-icon__i c-icon__i--hand-img c-background--full"></div>
@@ -60,9 +60,10 @@
 </script>
 
 <style lang="scss">
-
     .hand-list{
         display: inline-block;
+        height:160px;
+        overflow-x: auto;
         .card-wrapper{
             float:left;
             margin-bottom: 10px;
@@ -73,5 +74,9 @@
         right: 35px;
         top: 52px;
     }
-
+@media screen and (max-width:420px) {
+    .hand-list{
+        height:122px;
+    }
+}
 </style>
